@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Список отзывов</h1>
+  <a href="{% url 'review_create' %}">Добавить отзыв</a>
+  <ul>
+    {% for review in reviews %}
+      <li>
+        <a href="{% url 'review_detail' review.pk %}">Отзыв на {{ review.product.name }}</a>
+        <a href="{% url 'review_update' review.pk %}">Редактировать</a>
+        <a href="{% url 'review_delete' review.pk %}">Удалить</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

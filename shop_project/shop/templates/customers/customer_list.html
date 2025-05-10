@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Список клиентов</h1>
+  <a href="{% url 'customer_create' %}">Добавить клиента</a>
+  <ul>
+    {% for customer in customers %}
+      <li>
+        {{ customer.first_name }} {{ customer.last_name }} - {{ customer.email }}
+        <a href="{% url 'customer_update' customer.pk %}">Редактировать</a>
+        <a href="{% url 'customer_delete' customer.pk %}">Удалить</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}
