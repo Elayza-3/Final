@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Список услуг</h1>
+  <a href="{% url 'service_create' %}">Добавить услугу</a>
+  <ul>
+    {% for service in services %}
+      <li class="service-card">
+        <h2>{{ service.name }}</h2>
+        <p>{{ service.description }}</p>
+        {% if service.photo %}
+          <img src="{{ service.photo.url }}" alt="{{ service.name }}">
+        {% endif %}
+        <a href="{% url 'service_detail' service.pk %}">Подробнее</a>
+        <a href="{% url 'service_update' service.pk %}">Редактировать</a>
+        <a href="{% url 'service_delete' service.pk %}">Удалить</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

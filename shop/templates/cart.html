@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <style>
+        /* Общие стили */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ADFF2F;
+            color: #333;
+        }
+
+        /* Стили для кнопки */
+    .order-button {
+        background-color: #FFD700;
+        color: #333;
+        border: none;
+        padding: 15px 30px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 20px;
+        margin: 20px 0;
+        cursor: pointer;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        font-weight: bold;
+    }
+
+    .order-button:hover {
+        background-color: #FFC000;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        transform: translateY(-2px);
+    }
+
+    .order-button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+        /* Стили для навигационного меню */
+        nav {
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        nav a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        nav a:hover {
+            background-color: #FFD700;
+            color: black;
+        }
+
+        /* Стили для контейнера */
+        .container {
+            padding: 20px;
+        }
+
+        /* Стили для основного контента */
+        .main-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        .main-content h1 {
+            color: #FFD700;
+        }
+
+        .main-content p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* Стили для заголовка */
+        .header {
+            background-color: #FFD700;
+            color: #333;
+            padding: 20px;
+            text-align: center;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        /* Стили для карточек товаров в корзине */
+        .cart-item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .cart-item h2 {
+            color: #FFD700;
+            margin-top: 10px;
+        }
+
+        .cart-item p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .cart-item .price {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .cart-item .remove {
+            color: #FFD700;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+        }
+
+        .cart-summary h2 {
+            color: #FFD700;
+        }
+
+        .cart-summary p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .cart-summary .total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>РЫБАЦКИЙ УГОЛОЧЕК</h1>
+    </div>
+
+    <nav>
+        <a href="{% url 'info_view' %}">Главная</a>
+        <a href="{% url 'about_view' %}">Отзывы</a>
+        <a href="{% url 'services_view' %}">Услуги</a>
+        <a href="{% url 'contact_view' %}">Клиенты</a>
+        <a href="{% url 'product_list' %}">Товары</a>
+        <a href="{% url 'categories_view' %}">Категории</a>
+        <a href="{% url 'review_list' %}">Отзывы</a>
+        <a href="{% url 'cart_view' %}">Корзина</a>
+    </nav>
+
+    <div class="container main-content">
+        <h1>Корзина</h1>
+        {% if cart_items %}
+            <ul>
+                {% for item in cart_items %}
+                    <li class="cart-item">
+                        <h2>{{ item.product.name }}</h2>
+                        <p>{{ item.product.description }}</p>
+                        <p class="price">{{ item.price }} руб.</p>
+                        <a href="{% url 'remove_from_cart' item.product.id %}" class="remove">Удалить</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="cart-summary">
+                <h2>Итого:</h2>
+                <p class="total">{{ total_price }} руб.</p>
+                <form action="{% url 'create_order' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="order-button">Создать заказ</button>
+                </form>
+            </div>
+        {% else %}
+            <p>В корзине пока нет товаров.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
